@@ -1,5 +1,6 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const refs = {
 		input: document.querySelector('#datetime-picker'),
@@ -25,13 +26,17 @@ const options = {
 		if (deltaTime > 0) {
 			refs.btnStartStop.disabled = false;
 		} else {
-			alert("Please choose a date in the future");
+			Notify.failure("Please choose a date in the future");
       refs.btnStartStop.disabled = true
 		}
   },
 };
 
 const fp = flatpickr(refs.input, options);
+
+function addLeadingZero(value) {
+    return String(value).padStart(2, '0')
+}
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -41,13 +46,13 @@ function convertMs(ms) {
   const day = hour * 24;
 
   // Remaining days
-  const days = Math.floor(ms / day);
+  const days = addLeadingZero(Math.floor(ms / day));
   // Remaining hours
-  const hours = Math.floor((ms % day) / hour);
+  const hours = addLeadingZero(Math.floor((ms % day) / hour));
   // Remaining minutes
-  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
   // Remaining seconds
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
 
   return { days, hours, minutes, seconds };
 }
