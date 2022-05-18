@@ -11,6 +11,8 @@ const refs = {
     seconds: document.querySelector('[data-seconds]'),
 }
 
+// refs.btnStartStop.disabled = true;
+
 let timerId = null;
 
 const options = {
@@ -28,6 +30,7 @@ const options = {
 		} else {
 			Notify.failure("Please choose a date in the future");
       refs.btnStartStop.disabled = true
+      refs.input.disabled = true
 		}
   },
 };
@@ -61,7 +64,7 @@ function onClickbtnStart() {
 	if (timerId) return;
 	const startCount = fp.selectedDates[0];
 	timerId = setInterval(() => {
-		refs.btnStartStop.textContent = 'Stop';
+		// refs.btnStartStop.textContent = 'Stop';
     if(startCount.getTime() <= Date.now()){
 			clearInterval(timerId);
       return
@@ -72,21 +75,21 @@ function onClickbtnStart() {
   }, 1000);
 }
 
-function onClickbtnStop() {
-	clearInterval(timerId);
-	refs.btnStartStop.textContent = 'Start';
-	timerId = null;
-}
+// function onClickbtnStop() {
+// 	clearInterval(timerId);
+// 	refs.btnStartStop.textContent = 'Start';
+// 	timerId = null;
+// }
 
-function handleClick () {
-	if (timerId) {
-		onClickbtnStop();
-	} else {
-		onClickbtnStart();
-	}
-}
+// function handleClick () {
+// 	if (timerId) {
+// 		onClickbtnStop();
+// 	} else {
+// 		onClickbtnStart();
+// 	}
+// }
 
-refs.btnStartStop.addEventListener('click', handleClick);
+refs.btnStartStop.addEventListener('click', onClickbtnStart);
 
 function updateClockFace ({ days, hours, minutes, seconds }) {
 	refs.days.textContent = days;
